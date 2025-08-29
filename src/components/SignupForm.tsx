@@ -3,14 +3,14 @@ import './SignupForm.css';
 import { useForm } from '../hooks/useForm';
 
 const SignupForm: React.FC = () => {
-    const { formData, handleInputChange } = useForm();
+    const { formData, handleInputChange, handleSubmit, isSubmitting } = useForm();
 
 
   return (
     <div className="signup-container">
       <div className="signup-form-wrapper">
         <h2>Sign Up</h2>
-        <form className="signup-form">
+        <form onSubmit={handleSubmit} className="signup-form">
           {/* Username Field */}
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -21,6 +21,7 @@ const SignupForm: React.FC = () => {
               value={formData.username}
               onChange={handleInputChange}
               placeholder="Enter your username"
+              disabled={isSubmitting}
             />
            <span className="error-message">Error message</span>
           </div>
@@ -35,6 +36,7 @@ const SignupForm: React.FC = () => {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="Enter your password"
+              disabled={isSubmitting}
             />
             <span className="error-message">Error message</span>
           </div>
@@ -49,6 +51,7 @@ const SignupForm: React.FC = () => {
               value={formData.confirmPassword}
               onChange={handleInputChange}
               placeholder="Confirm your password"
+              disabled={isSubmitting}
             />
             <span className="error-message">Error message</span>
           </div>
@@ -57,8 +60,9 @@ const SignupForm: React.FC = () => {
           <button 
             type="submit" 
             className="submit-button"
+            disabled={isSubmitting}
           >
-            Sign Up
+            {isSubmitting ? 'Signing Up...' : 'Sign Up'}
           </button>
         </form>
       </div>
