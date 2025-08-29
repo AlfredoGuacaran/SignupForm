@@ -95,9 +95,6 @@ export function useForm() {
     return newErrors;
   }
 
-
-
-
   return {
     formData,
     handleInputChange,
