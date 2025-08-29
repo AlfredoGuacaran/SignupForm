@@ -1,7 +1,9 @@
 import React from 'react';
 import './SignupForm.css';
+import { useForm } from '../hooks/useForm';
 
 const SignupForm: React.FC = () => {
+    const { formData, handleInputChange } = useForm();
 
 
   return (
@@ -16,6 +18,8 @@ const SignupForm: React.FC = () => {
               type="text"
               id="username"
               name="username"
+              value={formData.username}
+              onChange={handleInputChange}
               placeholder="Enter your username"
             />
            <span className="error-message">Error message</span>
@@ -28,6 +32,8 @@ const SignupForm: React.FC = () => {
               type="password"
               id="password"
               name="password"
+              value={formData.password}
+              onChange={handleInputChange}
               placeholder="Enter your password"
             />
             <span className="error-message">Error message</span>
@@ -40,6 +46,8 @@ const SignupForm: React.FC = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
               placeholder="Confirm your password"
             />
             <span className="error-message">Error message</span>
