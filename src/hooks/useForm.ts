@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import type { FormData, FormErrors } from '../interfaces/SignupForm.interfaces';
 
 // Initial form data
@@ -16,13 +16,36 @@ export function useForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const updatedFormData = { ...formData, [name]: value };
     
+    setFormData(updatedFormData);
+    
+    // Validate using the updated data
+    if (name === 'confirmPassword' || name === 'password') { 
+      const newErrors = validatePasswords(updatedFormData);
+      setErrors(newErrors);
+    } else {
+      setErrors({});
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const formErrors = validateFormData(formData);
+    const passwordErrors = validatePasswords(formData);
+    
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+
+    if (Object.keys(passwordErrors).length > 0) {
+      setErrors(passwordErrors);
+      return;
+    }
+
+    setErrors({});
     setIsSubmitting(true);
 
     try {
@@ -38,13 +61,49 @@ export function useForm() {
     }
   };
 
+  const validatePasswords = (data: FormData): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    if (!data.password) {
+      newErrors.password = 'Password is required';
+    }
+
+    if (!data.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (data.password !== data.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    return newErrors;
+  };
+
+  const validateFormData = (data: FormData): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    if (!data.username.trim()) {
+      newErrors.username = 'Username is required';
+    }
+
+    if (!data.password.trim()) {
+      newErrors.password = 'Password is required';
+    }
+
+    if (!data.confirmPassword.trim()) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    }
+
+    return newErrors;
+  }
+
+
 
 
   return {
     formData,
     handleInputChange,
     handleSubmit,
-    isSubmitting
+    isSubmitting,
+    errors
 
   };
 }

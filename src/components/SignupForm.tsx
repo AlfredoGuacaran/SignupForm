@@ -3,7 +3,7 @@ import './SignupForm.css';
 import { useForm } from '../hooks/useForm';
 
 const SignupForm: React.FC = () => {
-    const { formData, handleInputChange, handleSubmit, isSubmitting } = useForm();
+    const { formData, handleInputChange, handleSubmit, isSubmitting, errors } = useForm();
 
 
   return (
@@ -22,8 +22,10 @@ const SignupForm: React.FC = () => {
               onChange={handleInputChange}
               placeholder="Enter your username"
               disabled={isSubmitting}
+              className={errors.username ? 'error' : ''}
             />
-           <span className="error-message">Error message</span>
+            {errors.username && <span className="error-message">{errors.username}</span>}
+
           </div>
 
           {/* Password Field */}
@@ -37,8 +39,10 @@ const SignupForm: React.FC = () => {
               onChange={handleInputChange}
               placeholder="Enter your password"
               disabled={isSubmitting}
+              className={errors.password ? 'error' : ''}
             />
-            <span className="error-message">Error message</span>
+            {errors.password && <span className="error-message">{errors.password}</span>}
+
           </div>
 
           {/* Confirm Password Field */}
@@ -53,7 +57,7 @@ const SignupForm: React.FC = () => {
               placeholder="Confirm your password"
               disabled={isSubmitting}
             />
-            <span className="error-message">Error message</span>
+            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
           </div>
 
           {/* Submit Button */}
